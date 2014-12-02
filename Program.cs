@@ -10,38 +10,35 @@ namespace Telephonebook
     {
         static void AddContant()
         {
-            bool flag=true;
+            bool flag = true;
             Console.Write("Create a new contact. Enter name:");
             string s = Console.ReadLine();
-            //string s =st.ToUpper();
             string number;
             Console.Write("Enter phone number (+XXX XX XXX XXXX):");
-           
-            double numbrdoub ;
+
+            double numbrdoub;
             while (flag)
             {
                 number = Console.ReadLine();
-                bool num = Double.TryParse(number,out numbrdoub);
+                bool num = Double.TryParse(number, out numbrdoub);
                 if (num)
                 {
                     flag = false;
-                    Console.Write("Ready to add contact. Name: "+s+" Phone number:"+number+" . Confirm: press 1, cancel: press 2: ");
-                   string i= Console.ReadLine();
-                   if (i == "1")
-                   {
-                       Console.WriteLine("New contact " + s + " added");
-                       using (System.IO.StreamWriter file = new System.IO.StreamWriter("Telephonebook.txt", true))
-                       {
-                           string line = s + " " + number;
-                          file.WriteLine(line);
-                               
-                           
-                       }
-                   }
-                   else
-                   {
-                       Console.WriteLine("Cancel");
-                   }
+                    Console.Write("Ready to add contact. Name: " + s + " Phone number:" + number + " . Confirm: press 1, cancel: press 2: ");
+                    string i = Console.ReadLine();
+                    if (i == "1")
+                    {
+                        Console.WriteLine("New contact " + s + " added");
+                        using (System.IO.StreamWriter file = new System.IO.StreamWriter("Telephonebook.txt", true))
+                        {
+                            string line = s + " " + number;
+                            file.WriteLine(line);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Cancel");
+                    }
 
                 }
                 else
@@ -50,90 +47,127 @@ namespace Telephonebook
                 }
             }
         }
-        static void FindName()
+        static void FindFirstName()
         {
-        
             Console.Write("Write word for find:");
-            string word=Console.ReadLine().ToUpper();
+            string word = Console.ReadLine().ToUpper();
             int count = 0;
             string[] lines = System.IO.File.ReadAllLines("Telephonebook.txt");
-            foreach (string line in lines)
+            bool finded = false;
+            foreach (string s_each in lines)
             {
-                string s = line.ToUpper();
-                int i = s.IndexOf(word);
-               
-                    if (i == -1)
-                    {
-                        count++;
-                    }
-                    else
-                    {
-                        Console.WriteLine(line);
-                        
-                    }
-                
+                string s = s_each.ToUpper();
+                string sub = "";
+                int i = 0;
+                while (s[i] == ' ' && i<s.Length) i++;
+                int k = 0;
+                while (s[i + k] != ' ' && (i+k) < s.Length)
+                {
+                    sub += s[i + k];
+                    k++;
+                }
+                int a = sub.IndexOf(word);
+                if (a != -1)
+                {
+                    finded = true;
+                    Console.WriteLine(lines[count]);
+                }
+                count++;
             }
-            if (count == lines.Length)
+            if (!finded)
             {
                 Console.WriteLine("Information not found");
             }
+        }
+        static void FindLastName()
+        {
 
+            Console.Write("Write word for find:");
+            string word = Console.ReadLine().ToUpper();
+            int count = 0;
+            string[] lines = System.IO.File.ReadAllLines("Telephonebook.txt");
+            bool finded = false;
+            foreach (string s_each in lines)
+            {
+                string s = s_each.ToUpper();
+                string sub = "";
+                int i = 0;
+                while (s[i] == ' ' && i < s.Length) i++;
+                while (s[i] != ' ' && i < s.Length) i++;
+                while (s[i] == ' ' && i < s.Length) i++;
+                int k = 0;
+                while (s[i + k] != ' ' && (i + k) < s.Length)
+                {
+                    sub += s[i + k];
+                    k++;
+                }
+                int a = sub.IndexOf(word);
+                if (a != -1)
+                {
+                    finded = true;
+                    Console.WriteLine(lines[count]);
+                }
+                count++;
+            }
+            if (!finded)
+            {
+                Console.WriteLine("Information not found");
+            }
         }
         static int ReadALLContants()
         {
             string[] lines = System.IO.File.ReadAllLines("Telephonebook.txt");
-           int count = 1;
+            int count = 1;
             // Display the file contents by using a foreach loop.
             Console.WriteLine("Contents of Telephone book = ");
             foreach (string line in lines)
             {
                 //string s = line.ToUpper();
                 // Use a tab to indent each line of the file.
-                Console.WriteLine("\t"+count + "." + line);
+                Console.WriteLine("\t" + count + "." + line);
                 count++;
             }
             return count;
         }
-        static void FindbyPhone()
+        static void FindPhoneNumber()
         {
-         
+
             Console.Write("Write number for find:");
-            double numbre;
-            
-            string numb=Console.ReadLine().ToUpper();
-            //string word = numb;
-            bool num = Double.TryParse(numb, out numbre);
+            string word = Console.ReadLine().ToUpper();
             int count = 0;
-            if (num)
+            string[] lines = System.IO.File.ReadAllLines("Telephonebook.txt");
+            bool finded = false;
+            foreach (string s_each in lines)
             {
-                string[] lines = System.IO.File.ReadAllLines("Telephonebook.txt");
-                foreach (string line in lines)
+                string s = s_each.ToUpper();
+                string sub = "";
+                int i = 0;
+                while (s[i] == ' ' && i < s.Length) i++;
+                while (s[i] != ' ' && i < s.Length) i++;
+                while (s[i] == ' ' && i < s.Length) i++;
+                while (s[i] != ' ' && i < s.Length) i++;
+                while (s[i] == ' ' && i < s.Length) i++;
+                int k = 0;
+                while (s[i + k] != ' ')
                 {
-                    string s = line.ToUpper();
-                    int i = s.IndexOf(numb);
-
-                    if (i == -1)
-                    {
-                        count++;
-                    }
-                    else
-                    {
-                        Console.WriteLine(line);
-
-                    }
-
+                    sub += s[i + k];
+                    k++;
+                    if ((i + k) >= s.Length)
+                        break;
                 }
-                if (count == lines.Length)
+                int a = sub.IndexOf(word);
+                if (a != -1)
                 {
-                    Console.WriteLine("Information not found");
+                    finded = true;
+                    Console.WriteLine(lines[count]);
                 }
+                count++;
             }
-            else
+            if (!finded)
             {
-                Console.WriteLine("Wrong symbols");
+                Console.WriteLine("Information not found");
             }
         }
-
         static void Delete()
         {
          int count=ReadALLContants();
@@ -145,7 +179,7 @@ namespace Telephonebook
            {
                Console.WriteLine("You choose wrong number");
            }
-           if (num
+           if (num)
            {
                int counter = 1;
                string[] lines = System.IO.File.ReadAllLines("Telephonebook.txt");
@@ -184,19 +218,21 @@ namespace Telephonebook
                 Console.WriteLine("1. list all contacts");
                 Console.WriteLine("2. add a contact");
                 Console.WriteLine("3. remove a contact");
-                Console.WriteLine("4. find contact by name");
-                Console.WriteLine("5. find contact by number ");
-                Console.WriteLine("6. exit");
+                Console.WriteLine("4. find contact by first name");
+                Console.WriteLine("5. find contact by last name");
+                Console.WriteLine("6. find contact by number ");
+                Console.WriteLine("7. exit");
                 Console.Write("Enter your action:");
-                string  s = (Console.ReadLine());
+                string s = (Console.ReadLine());
                 switch (s)
                 {
-                    case "1": int i=ReadALLContants(); break;
-                    case "2": AddContant(); Console.ReadLine();  break;
+                    case "1": int i = ReadALLContants(); break;
+                    case "2": AddContant(); Console.ReadLine(); break;
                     case "3": Delete(); break;
-                    case "4": FindName(); break;
-                    case "5": FindbyPhone(); break;
-                    case "6": Console.WriteLine("BY"); flag = false; break;
+                    case "4": FindFirstName(); break;
+                    case "5": FindLastName(); break;
+                    case "6": FindPhoneNumber(); break;
+                    case "7": Console.WriteLine("BY"); flag = false; break;
                     default: Console.WriteLine("You choose wrong menu"); break;
 
                 }
